@@ -1,7 +1,12 @@
 use std::thread;
+use std::sync::{Mutex, Arc};
 
 struct Philosopher {
     name: String,
+}
+
+struct Table {
+    forks: Vec<Mutex<()>>,
 }
 
 impl Philosopher {
