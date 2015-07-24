@@ -1,3 +1,6 @@
-fn main() {
-    println!("Hello, world!");
+struct Philosopher {
+    name: String,
+}
+
+impl Philosopher {
 }
