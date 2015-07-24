@@ -44,11 +44,11 @@ fn main() {
     });
 
     let philosophers = vec![
-        Philosopher::new("Bunts"),
-        Philosopher::new("Mel"),
-        Philosopher::new("Grace"),
-        Philosopher::new("Rohan"),
-        Philosopher::new("Angelina"),
+        Philosopher::new("Bunts", 0, 1),
+        Philosopher::new("Mel", 1, 2),
+        Philosopher::new("Grace", 2, 3),
+        Philosopher::new("Rohan", 3, 4),
+        Philosopher::new("Angelina", 0, 4),
     ];
 
     let handles: Vec<_> = philosophers.into_iter().map(|p| {
