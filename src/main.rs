@@ -3,6 +3,8 @@ use std::sync::{Mutex, Arc};
 
 struct Philosopher {
     name: String,
+    left: usize,
+    right: usize,
 }
 
 struct Table {
@@ -10,13 +12,18 @@ struct Table {
 }
 
 impl Philosopher {
-    fn new(name: &str) -> Philosopher {
+    fn new(name: &str, left: usize, right: usize) -> Philosopher {
       Philosopher {
           name: name.to_string(),
+          left: left,
+          right: right,
       }
     }
 
-    fn eat(&self) {
+    fn eat(&self, table: &Table) {
+        let _left = table.forks[self.left].lock().unwrap();
+        let _right = table.forks[self.right].lock().unwrap();
+
         println!("{} is eating.", self.name);
 
         thread::sleep_ms(1000);
@@ -26,6 +33,16 @@ impl Philosopher {
 }
 
 fn main() {
+    let table = Arc::new(Table{
+        forks: vec![
+            Mutex::new(()),
+            Mutex::new(()),
+            Mutex::new(()),
+            Mutex::new(()),
+            Mutex::new(()),
+        ]
+    });
+
     let philosophers = vec![
         Philosopher::new("Bunts"),
         Philosopher::new("Mel"),
@@ -35,8 +52,10 @@ fn main() {
     ];
 
     let handles: Vec<_> = philosophers.into_iter().map(|p| {
+        let table = table.clone();
+
         thread::spawn(move || {
-            p.eat();
+            p.eat(&table);
         })
     }).collect();
 
